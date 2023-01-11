@@ -2,6 +2,9 @@ import React from 'react'
 import { Formik } from "formik";
 import '../../common/styles/Form.scss';
 import * as Yup from "yup";
+import axios from '../../api/axois'
+import { useNavigate } from 'react-router';
+import jwtDecode from 'jwt-decode';
 
 // Creating schema
 const schema = Yup.object().shape({
@@ -10,11 +13,12 @@ const schema = Yup.object().shape({
     .email("Invalid email format"),
   password: Yup.string()
     .required("Password is a required field")
-    .min(8, "Password must be at least 8 characters"),
+    .min(4, "Password must be at least 8 characters"),
 });
 
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* Wrapping form inside formik tag and passing our schema to validationSchema prop */}
@@ -22,7 +26,26 @@ const LoginPage = () => {
         validationSchema={schema}
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
-          alert(JSON.stringify(values));
+          try {
+            axios.post('/auth/login', values)
+              .then((response) => {
+                const token = response.data;
+                console.log(response.data);
+
+                localStorage.setItem('token', token);
+
+                const decodedToken = jwtDecode(token);
+                console.log(decodedToken);
+
+                navigate('/');
+              });
+            
+          } catch (err) {
+            alert("ERROR");
+            console.log(err);
+            navigate('/login');
+          }
+
         }}
       >
         {({
