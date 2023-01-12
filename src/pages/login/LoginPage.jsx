@@ -1,10 +1,11 @@
-import React from 'react'
+import { React, useContext } from 'react'
 import { Formik } from "formik";
 import '../../common/styles/Form.scss';
 import * as Yup from "yup";
 import axios from '../../api/axois'
 import { useNavigate } from 'react-router';
 import jwtDecode from 'jwt-decode';
+import useAuth from '../../hooks/useAuth';
 
 // Creating schema
 const schema = Yup.object().shape({
@@ -16,8 +17,8 @@ const schema = Yup.object().shape({
     .min(4, "Password must be at least 8 characters"),
 });
 
-
 const LoginPage = () => {
+  const { setIsLoggedIn, setUserRole } = useAuth();
   const navigate = useNavigate();
   return (
     <>
@@ -30,14 +31,16 @@ const LoginPage = () => {
             axios.post('/auth/login', values)
               .then((response) => {
                 const token = response.data;
-                console.log(response.data);
-
                 localStorage.setItem('token', token);
 
-                const decodedToken = jwtDecode(token);
-                console.log(decodedToken);
-
-                navigate('/');
+                const decodedToken = jwtDecode(token);                
+                
+                setIsLoggedIn(true)
+                setUserRole(decodedToken.authorities[0].authority)
+                
+                if (decodedToken.authorities[0].authority == "USER")
+                  navigate('/user');
+                else navigate('/admin')
               });
             
           } catch (err) {

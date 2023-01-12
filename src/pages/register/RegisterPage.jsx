@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import '../../common/styles/Form.scss';
 import * as Yup from "yup";
 import axios from '../../api/axois';
+import { useNavigate } from 'react-router';
+
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -14,6 +16,8 @@ const schema = Yup.object().shape({
 });
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+
   return (
     <>
     {/* Wrapping form inside formik tag and passing our schema to validationSchema prop */}
@@ -29,6 +33,7 @@ const RegisterPage = () => {
               role: "USER"
             });
             console.log(response.data);
+            navigate("/login");
         } catch (error) {
           console.log(error);
         }
