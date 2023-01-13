@@ -2,7 +2,7 @@ import { React, useContext } from 'react'
 import { Formik } from "formik";
 import '../../common/styles/Form.scss';
 import * as Yup from "yup";
-import axios from '../../api/axois'
+import axiosInstance from '../../config/axois'
 import { useNavigate } from 'react-router';
 import jwtDecode from 'jwt-decode';
 import useAuth from '../../hooks/useAuth';
@@ -28,7 +28,7 @@ const LoginPage = () => {
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
           try {
-            axios.post('/auth/login', values)
+            axiosInstance.post('/auth/login', values)
               .then((response) => {
                 const token = response.data;
                 localStorage.setItem('token', token);
@@ -42,13 +42,11 @@ const LoginPage = () => {
                   navigate('/user');
                 else navigate('/admin')
               });
-            
           } catch (err) {
             alert("ERROR");
             console.log(err);
             navigate('/login');
           }
-
         }}
       >
         {({

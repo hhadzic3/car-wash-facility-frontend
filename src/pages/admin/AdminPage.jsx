@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import axios from '../../api/axois'
+import axiosInstance from '../../config/axois'
 import { List } from 'antd';
 
 const AdminPage = () => {
@@ -12,7 +12,7 @@ const AdminPage = () => {
       const controller = new AbortController();
       const getUsers = async () => {
         try {
-          const response = await axios.get('/user', {
+          const response = await axiosInstance.get('/user', {
             signal: controller.signal
           })
           isMounted && setUsers(response.data)

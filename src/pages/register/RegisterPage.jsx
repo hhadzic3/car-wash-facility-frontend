@@ -2,7 +2,7 @@ import React from 'react'
 import { Formik } from "formik";
 import '../../common/styles/Form.scss';
 import * as Yup from "yup";
-import axios from '../../api/axois';
+import axiosInstance from '../../config/axois';
 import { useNavigate } from 'react-router';
 
 
@@ -26,7 +26,7 @@ const RegisterPage = () => {
       initialValues={{ email: "", password: "" }}
       onSubmit={async (values) => {
         try {
-          const response = await axios.post("/user/register", 
+          const response = await axiosInstance.post("/user/register", 
             {
               email: values.email,
               password: values.password,
