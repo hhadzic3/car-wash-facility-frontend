@@ -26,7 +26,7 @@ const RegisterPage = () => {
       initialValues={{ email: "", password: "" }}
       onSubmit={async (values) => {
         try {
-          const response = await axiosInstance.post("/user/register", 
+          const response = await axiosInstance.post("/auth/register", 
             {
               email: values.email,
               password: values.password,
