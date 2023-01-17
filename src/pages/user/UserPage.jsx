@@ -1,35 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import SelectLocation from '../../components/SelectLocation/SelectLocation'
-import axiosInstance from '../../config/axois'
-import { Button, Modal } from 'antd';
 import ListOfPackages from '../../components/ListOfPackages/ListOfPackages';
+import Reservation from '../../components/Reservation/Reservation';
+import './UserPage.scss'
 
 const UserPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div>
-      <SelectLocation/>
+      <div className='center-div'>
+        <SelectLocation/>
+      </div>
+      <h3 className='margin'> Select package </h3>
       <ListOfPackages/>
-      <Button style={{ margin: 50 }} type="primary" onClick={showModal}>
-        Reserve car wash
-      </Button>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Location: Vratnik</p>
-        <p>Package: King wash</p>
-        <p>Discount: 10%</p>
-        <p>Pay:  90$</p>
-      </Modal>
-
+      <div className='center-div'>
+        <Reservation/>
+      </div>
     </div>
   )
 }

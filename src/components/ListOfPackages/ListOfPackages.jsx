@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { List } from 'antd';
 import axiosInstance from '../../config/axois'
-import { Button, Modal } from 'antd';
-import { Steps } from 'antd';
+import PackageSteps from '../PackageSteps/PackageSteps';
+import { Checkbox } from 'antd';
 
 const ListOfPackages = () => {
   const [packages, setPackages] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+
+  const handleCheckboxChange = (e) => {
+    setSelectedCheckbox(e.target.value);
+    console.log('checked = ', e.target.value);
   };
 
   useEffect(() => {
@@ -25,7 +21,8 @@ const ListOfPackages = () => {
         const response = await axiosInstance.get('/package', {
           signal: controller.signal
         })
-        isMounted && setPackages(response.data)
+        if (isMounted) 
+          setPackages(response.data)
       } catch (error) {
         console.log(error)
       }
@@ -45,34 +42,22 @@ const ListOfPackages = () => {
       <List
           itemLayout="horizontal"
           dataSource={packages}
-          renderItem={(item) => (
-            <List.Item
-              actions={[<a key="list-loadmore-edit">Packages</a>]}
-            >
+          renderItem={(item, index) => (
+            <List.Item>
+             <Checkbox
+                style={{ marginRight: '15px' }}
+                value={item.id}
+                checked={selectedCheckbox === item.id}
+                onChange={handleCheckboxChange}
+              >
+              </Checkbox>
               <List.Item.Meta
                   title={item.name}
                 />
-                <>
-                  <Button onClick={showModal}>
-                    Steps of washing
-                  </Button>
-                  <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                    <Steps
-                      size="small"
-                      items={[
-                        {
-                          title: 'Step1',
-                        },
-                        {
-                          title: 'Step2',
-                        },
-                        {
-                          title: 'Step3',
-                        },
-                      ]}
-                    />
-                  </Modal>
-                </>
+              <List.Item.Meta
+                  title={item.cost + ' EUR'}
+                />
+                <PackageSteps packageStep={item.packageStep} /> 
             </List.Item>
           )}
         />
