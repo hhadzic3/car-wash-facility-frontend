@@ -1,14 +1,8 @@
 //import { UserRoles } from 'common/constants/enums';
-import { HomePage, NotFoundPage, UserPage, AdminPage, LoginPage, RegisterPage, UnauthorizedPage } from './pages/index';
+import { NotFoundPage, UserPage, AdminPage, LoginPage, RegisterPage, UnauthorizedPage } from './pages/index';
 import { UserRoles } from './common/enums/enums' 
 
 const routes = [
-	{
-		path: '/',
-		element: <HomePage />,
-		authorized: false,
-		allowedRoles: [],
-	},
 	{
 		path: '/login',
 		element: <LoginPage />,

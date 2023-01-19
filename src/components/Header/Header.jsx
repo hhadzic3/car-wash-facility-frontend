@@ -4,56 +4,72 @@ import { Link } from 'react-router-dom';
 import './Header.scss'
 import { UserRoles } from '../../common/enums/enums' 
 import useAuth from '../../hooks/useAuth';
+import { removeToken } from '../../services/authService';
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, userRole, setUserRole  } = useAuth();
+  const [current, setCurrent] = useState("login");
 
   const logOut = () => {
-    localStorage.removeItem('token');
+    removeToken();
     setIsLoggedIn(false)
     setUserRole(null)
   };
-    
+
+  const items = [];
+
+  if (!isLoggedIn) {
+    items.push(
+      {
+        label: (
+          <Link to="/login">Login</Link>
+        ),
+        key: 'login',
+      },
+      {
+        label: (
+          <Link to="/register">Register</Link>
+        ),
+        key: 'register',
+      }
+    )
+  } else {
+    if (userRole == UserRoles.User){
+      items.push(
+        {
+          label: (
+            <Link to="/user">User page</Link>
+          ),
+          key: 'user',
+        }
+      )
+    } else {
+      items.push(
+        {
+          label: (
+            <Link to="/admin">Admin page</Link>
+          ), 
+          key: 'admin',
+        }
+      )
+    }
+    items.push(
+      {
+        label: (
+          <Link to="/login" onClick={logOut}>Logout</Link>
+        ), 
+        key: 'logout',
+      }
+    )
+  }
+
+  const onClick = (e) => {
+    setCurrent(e.key);
+  };
+
   return (
     <div className='header'>
-      <Menu mode="horizontal" defaultSelectedKeys={['home']}>
-        { 
-          !isLoggedIn &&
-            <>
-              <Menu.Item key="home">
-                <Link to="/">Home</Link>
-              </Menu.Item>
-              <Menu.Item key="login">
-                <Link to="/login">Login</Link>
-              </Menu.Item>
-              <Menu.Item key="register">
-                <Link to="/register">Register</Link>
-              </Menu.Item>
-            </>
-        }
-        {
-          (isLoggedIn && userRole == UserRoles.Admin) &&
-          <>
-            <Menu.Item key="admin">
-                <Link to="/admin">Admin page</Link>
-              </Menu.Item>
-              <Menu.Item key="logout">
-                <Link to="/" onClick={logOut}>Logout</Link>
-              </Menu.Item>
-          </>
-        }
-        {
-          (isLoggedIn && userRole == UserRoles.User) &&
-          <>
-            <Menu.Item key="user">
-                <Link to="/user">User page</Link>
-              </Menu.Item>
-              <Menu.Item key="logout">
-                <Link to="/" onClick={logOut}>Logout</Link>
-              </Menu.Item>
-          </>
-        }
-    </Menu>
+      <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
   </div>
   )
 }

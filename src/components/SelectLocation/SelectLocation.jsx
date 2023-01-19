@@ -3,10 +3,8 @@ import { Select } from 'antd';
 import axiosInstance from '../../config/axois'
 
 const onChange = (value) => {
-  console.log(`selected ${value}`);
 };
 const onSearch = (value) => {
-  console.log('search:', value);
 };
 
 const SelectLocation = () => {

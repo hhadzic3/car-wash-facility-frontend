@@ -32,7 +32,6 @@ const RegisterPage = () => {
               password: values.password,
               role: "USER"
             });
-            console.log(response.data);
             navigate("/login");
         } catch (error) {
           console.log(error);

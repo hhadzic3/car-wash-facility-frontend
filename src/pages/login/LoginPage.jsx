@@ -1,11 +1,11 @@
-import { React, useContext } from 'react'
+import { React } from 'react'
 import { Formik } from "formik";
 import '../../common/styles/Form.scss';
 import * as Yup from "yup";
 import axiosInstance from '../../config/axois'
 import { useNavigate } from 'react-router';
-import jwtDecode from 'jwt-decode';
 import useAuth from '../../hooks/useAuth';
+import { getDecodedToken, setToken } from '../../services/authService';
 
 // Creating schema
 const schema = Yup.object().shape({
@@ -31,9 +31,8 @@ const LoginPage = () => {
             axiosInstance.post('/auth/login', values)
               .then((response) => {
                 const token = response.data;
-                localStorage.setItem('token', token);
-
-                const decodedToken = jwtDecode(token);                
+                setToken(token)
+                const decodedToken = getDecodedToken;                
                 
                 setIsLoggedIn(true)
                 setUserRole(decodedToken.authorities[0].authority)

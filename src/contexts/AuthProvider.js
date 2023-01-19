@@ -1,21 +1,21 @@
 import { createContext, useEffect, useState } from "react";
-import jwtDecode from 'jwt-decode';
+import { getDecodedToken, getToken } from "../services/authService";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("token"));
+    const [isLoggedIn, setIsLoggedIn] = useState(getToken());
     const [userRole, setUserRole] = useState("");
 
     useEffect(() => {
-        if (localStorage.getItem("token")) 
+        if (getToken()) 
           setIsLoggedIn(true) 
         else {
             setIsLoggedIn(false);
         }
     
         if (isLoggedIn) 
-          setUserRole(jwtDecode(localStorage.getItem("token")).authorities[0].authority);
+          setUserRole(getDecodedToken(getToken()).authorities[0].authority);
       }, [userRole, isLoggedIn]);
 
     return (
