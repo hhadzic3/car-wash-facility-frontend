@@ -41,6 +41,7 @@ const LoginPage = () => {
                   navigate('/user');
                 else navigate('/admin')
               });
+              // todo: handle 403 status and uncought error 
           } catch (err) {
             alert("ERROR");
             console.log(err);

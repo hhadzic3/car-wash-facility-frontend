@@ -7,7 +7,7 @@ const PackageSteps = ({ packageStep }) => {
   useEffect(() => {
     const temp = []
     packageStep.forEach((data) => {
-      temp.push({ title: data.step.name, subTitle: data.sequenceNumber });
+      temp.push({ title: data.step.name/*, subTitle: data.sequenceNumber*/ });
     })
     setItems(temp);
   }, [])
