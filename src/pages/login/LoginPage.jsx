@@ -32,12 +32,12 @@ const LoginPage = () => {
               .then((response) => {
                 const token = response.data;
                 setToken(token)
-                const decodedToken = getDecodedToken;                
+                const decodedToken = getDecodedToken(token);                
                 
                 setIsLoggedIn(true)
                 setUserRole(decodedToken.authorities[0].authority)
                 
-                if (decodedToken.authorities[0].authority == "USER")
+                if (decodedToken.authorities[0].authority === "USER")
                   navigate('/user');
                 else navigate('/admin')
               });

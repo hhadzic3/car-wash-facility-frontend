@@ -8,7 +8,6 @@ import { removeToken } from '../../services/authService';
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, userRole, setUserRole  } = useAuth();
-  const [current, setCurrent] = useState("login");
 
   const logOut = () => {
     removeToken();
@@ -63,13 +62,9 @@ const Header = () => {
     )
   }
 
-  const onClick = (e) => {
-    setCurrent(e.key);
-  };
-
   return (
     <div className='header'>
-      <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+      <Menu mode="horizontal" items={items} />
   </div>
   )
 }

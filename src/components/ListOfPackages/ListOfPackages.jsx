@@ -1,12 +1,54 @@
 import React, { useEffect, useState } from 'react'
-import { List } from 'antd';
 import axiosInstance from '../../config/axois'
 import PackageSteps from '../PackageSteps/PackageSteps';
-import { Checkbox } from 'antd';
+import { Divider, Radio, Table } from 'antd';
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+  },
+];
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+  },
+];
+
+// rowSelection object indicates the need for row selection
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  },
+  getCheckboxProps: (record) => ({
+    disabled: record.name === 'Disabled User',
+    // Column configuration not to be checked
+    name: record.name,
+  }),
+};
 
 const ListOfPackages = () => {
   const [packages, setPackages] = useState();
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
+  const [selectionType, setSelectionType] = useState('radio');
 
   const handleCheckboxChange = (e) => {
     setSelectedCheckbox(e.target.value);
@@ -39,7 +81,7 @@ const ListOfPackages = () => {
 
   return (
     <div>
-      <List
+      {/*<List
           itemLayout="horizontal"
           dataSource={packages}
           renderItem={(item, index) => (
@@ -60,7 +102,27 @@ const ListOfPackages = () => {
                 <PackageSteps packageStep={item.packageStep} /> 
             </List.Item>
           )}
-        />
+          />*/}
+        <div>
+          <Radio.Group
+            onChange={({ target: { value } }) => {
+              setSelectionType(value);
+            }}
+            value={selectionType}
+          >
+          </Radio.Group>
+
+          <Divider />
+
+          <Table
+            rowSelection={{
+              type: selectionType,
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={data}
+          />
+        </div>
     </div>
   )
 }
