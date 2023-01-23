@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../config/axois'
 import PackageSteps from '../PackageSteps/PackageSteps';
 import { Divider, Radio, Table } from 'antd';
+import useReservation from '../../hooks/useReservation'
 
 const columns = [
   {
@@ -19,22 +20,25 @@ const columns = [
   },
 ];
 
-// rowSelection object indicates the need for row selection
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-  getCheckboxProps: (record) => ({
-    disabled: record.name === 'Disabled User',
-    // Column configuration not to be checked
-    name: record.name,
-  }),
-};
-
 const ListOfPackages = () => {
   const [packages, setPackages] = useState();
   const [data, setData] = useState([]);
   const [selectionType, setSelectionType] = useState('radio');
+  const { setSelectedPackage } = useReservation();
+
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      console.log(selectedRows[0])
+      setSelectedPackage(selectedRows[0]);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === 'Disabled User',
+      // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
 
   useEffect(() => {
     let isMounted = true;

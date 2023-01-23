@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Select } from 'antd';
 import axiosInstance from '../../config/axois'
-
-const onChange = (value) => {
-};
-const onSearch = (value) => {
-};
+import useReservation from '../../hooks/useReservation'
 
 const SelectLocation = () => {
 
   const [locations, setLocations] = useState();
   const [selectOptions, setSelectOptions] = useState([])
+  const { setSelectedLocation } = useReservation();
+
+  const onChange = (value) => {
+    console.log(locations[value]);
+    setSelectedLocation(locations[value].name)
+  };
+  const onSearch = (value) => {
+  };
 
   useEffect(() => {
     let isMounted = true;

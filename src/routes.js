@@ -1,4 +1,3 @@
-//import { UserRoles } from 'common/constants/enums';
 import { NotFoundPage, UserPage, AdminPage, LoginPage, RegisterPage, UnauthorizedPage } from './pages/index';
 import { UserRoles } from './common/enums/enums' 
 

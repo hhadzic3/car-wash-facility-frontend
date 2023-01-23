@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import { Button, Modal } from 'antd'
+import useReservation from '../../hooks/useReservation'
 
 const Reservation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { selectedLocation, selectedPackage, discount, setDiscount, finalCost, setFinalCost } = useReservation();
   
   const showModal = () => {
-    setIsModalOpen(true);
+    if (selectedLocation && selectedPackage)
+      setIsModalOpen(true);
+    else alert("Select location and package");
   };
   const handleOk = () => {
     setIsModalOpen(false);
@@ -20,10 +24,10 @@ const Reservation = () => {
           Reserve car wash
         </Button>
         <Modal title="Reserve car wash" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <p>Location: Vratnik</p>
-          <p>Package: King wash</p>
-          <p>Discount: 10%</p>
-          <p>Pay:  90$</p>
+          <p>Location: {selectedLocation}</p>
+          <p>Package: {selectedPackage.package}</p>
+          <p>Discount: {discount} %</p>
+          <p>Pay:  {finalCost} $</p>
         </Modal>
     </div>
   )
