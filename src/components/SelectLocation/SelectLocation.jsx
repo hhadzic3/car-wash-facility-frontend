@@ -10,8 +10,8 @@ const SelectLocation = () => {
   const { setSelectedLocation } = useReservation();
 
   const onChange = (value) => {
-    console.log(locations[value]);
-    setSelectedLocation(locations[value].name)
+    console.log(locations[value-1]);
+    setSelectedLocation(locations[value-1].name)
   };
   const onSearch = (value) => {
   };
@@ -42,27 +42,27 @@ const SelectLocation = () => {
       isMounted = false;
       controller.abort();
     }
-  }, [])
+  }, [locations, selectOptions])
 
 
   return (
     <div>
         <Select
-        size='large'
-        showSearch
-        style={{
-          width: 300,
-          margin: 50
-        }}
-        placeholder="Select a location"
-        optionFilterProp="children"
-        onChange={onChange}
-        onSearch={onSearch}
-        filterOption={(input, option) =>
-          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-        }
-        options={selectOptions}
-      />
+          size='large'
+          showSearch
+          style={{
+            width: 300,
+            margin: 50
+          }}
+          placeholder="Select a location"
+          optionFilterProp="children"
+          onChange={onChange}
+          onSearch={onSearch}
+          filterOption={(input, option) =>
+            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+          }
+          options={selectOptions}
+        />
     </div>
   )
 }

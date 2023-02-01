@@ -21,17 +21,16 @@ const columns = [
 ];
 
 const ListOfPackages = () => {
-  const [packages, setPackages] = useState();
   const [data, setData] = useState([]);
   const [selectionType, setSelectionType] = useState('radio');
-  const { setSelectedPackage } = useReservation();
+  const { setSelectedPackage, setFinalCost } = useReservation();
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      console.log(selectedRows[0])
       setSelectedPackage(selectedRows[0]);
+      setFinalCost(selectedRows[0].cost)
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User',
@@ -49,7 +48,6 @@ const ListOfPackages = () => {
           signal: controller.signal
         })
         if (isMounted) {
-          setPackages(response.data)
           const temp = []
           response.data.forEach((pack) => {
             temp.push({

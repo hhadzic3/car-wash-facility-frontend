@@ -9,10 +9,6 @@ export const ReservationProvider = ({ children }) => {
     const [discount, setDiscount] = useState(0);
     const [finalCost, setFinalCost] = useState(0);
 
-    useEffect(() => {
-       
-    }, []);
-
     return (
         <ReservationContext.Provider value={{ selectedLocation, setSelectedLocation, selectedPackage, setSelectedPackage, discount, setDiscount, finalCost, setFinalCost }}>
             {children}

@@ -10,7 +10,7 @@ const UserPage = () => {
     <div>
       <ReservationProvider>
         <div className='center-div'>
-          <SelectLocation/> // TODO: on location change state doesn't change
+          <SelectLocation/> 
         </div>
         <h3 className='margin'> Select package </h3>
         <ListOfPackages/>
