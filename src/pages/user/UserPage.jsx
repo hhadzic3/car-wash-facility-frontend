@@ -12,7 +12,6 @@ const UserPage = () => {
         <div className='center-div'>
           <SelectLocation/> 
         </div>
-        <h3 className='margin'> Select package </h3>
         <ListOfPackages/>
         <div className='center-div'>
           <Reservation/>

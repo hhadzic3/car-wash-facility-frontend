@@ -41,6 +41,7 @@ const Reservation = () => {
                           <p>Location: {selectedLocation}</p>
                           <p>Package: {selectedPackage.package}</p>
                           <p>Discount: {discount} %</p>
+                          <p>Note: Every 10th washing you get 10% discount. This is your  </p>
                           <p>Pay:  {finalCost} $</p>
                         </>
                         : <p> No data </p>

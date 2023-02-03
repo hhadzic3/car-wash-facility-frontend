@@ -74,6 +74,7 @@ const ListOfPackages = () => {
 
   return (
     <div>
+      <p className='margin'> Select package </p>
       <Radio.Group
         onChange={({ target: { value } }) => {
           setSelectionType(value);
@@ -85,6 +86,7 @@ const ListOfPackages = () => {
       <Divider />
 
       <Table
+        style={{margin: '10px'}}
         rowSelection={{
           type: selectionType,
           ...rowSelection,
