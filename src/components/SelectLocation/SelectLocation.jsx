@@ -10,7 +10,6 @@ const SelectLocation = () => {
   const { setSelectedLocation } = useReservation();
 
   const onChange = (value) => {
-    console.log(locations[value-1]);
     setSelectedLocation(locations[value-1])
   };
   const onSearch = (value) => {

@@ -6,7 +6,7 @@ import axiosInstance from '../../config/axois'
 import { useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { getDecodedToken, setToken } from '../../services/authService';
-import { message, Space } from 'antd';
+import { message } from 'antd';
 
 // Creating schema
 const schema = Yup.object().shape({

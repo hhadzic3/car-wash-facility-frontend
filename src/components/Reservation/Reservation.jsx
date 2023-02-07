@@ -2,10 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { Button, Modal } from 'antd'
 import useReservation from '../../hooks/useReservation'
 import axiosInstance from '../../config/axois';
+import { message } from 'antd';
 
 const Reservation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   const { selectedLocation, selectedPackage, discount, setDiscount, finalCost, setFinalCost, userId, numberOfWashings } = useReservation();
+
+  const warning = () => {
+    messageApi.open({
+      type: 'warning',
+      content: 'Select location and package',
+    });
+  };
 
   useEffect(() => {
     if (selectedPackage)
@@ -15,7 +24,7 @@ const Reservation = () => {
   const showModal = () => {
     if (selectedLocation && selectedPackage)
       setIsModalOpen(true);
-    else alert("Select location and package");
+    else warning();
   };
   const handleOk = async () => {
     setIsModalOpen(false);
@@ -35,6 +44,7 @@ const Reservation = () => {
   
   return (
     <div style={{margin: '20px'}}>
+      {contextHolder}
        <Button type="primary" onClick={showModal}>
           Reserve car wash
         </Button>

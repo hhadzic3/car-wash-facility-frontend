@@ -5,14 +5,33 @@ import './Header.scss'
 import { UserRoles } from '../../common/enums/enums' 
 import useAuth from '../../hooks/useAuth';
 import { removeToken } from '../../services/authService';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Modal } from 'antd';
+import { useNavigate } from 'react-router';
+
+const { confirm } = Modal;
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, userRole, setUserRole  } = useAuth();
+  const navigate = useNavigate();
 
   const logOut = () => {
-    removeToken();
-    setIsLoggedIn(false)
-    setUserRole(null)
+    showConfirm();
+  };
+
+  const showConfirm = () => {
+    confirm({
+      title: 'Logout?',
+      icon: <ExclamationCircleFilled />,
+      content: 'Do you Want to logout?',
+      onOk() {
+        removeToken();
+        setIsLoggedIn(false);
+        setUserRole(null);
+        navigate('/login');
+      },
+      onCancel() {},
+    });
   };
 
   const items = [];
@@ -55,7 +74,7 @@ const Header = () => {
     items.push(
       {
         label: (
-          <Link to="/login" onClick={logOut}>Logout</Link>
+          <Link onClick={logOut}>Logout</Link>
         ), 
         key: 'logout',
       }
