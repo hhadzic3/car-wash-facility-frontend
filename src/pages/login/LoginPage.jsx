@@ -6,6 +6,7 @@ import axiosInstance from '../../config/axois'
 import { useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { getDecodedToken, setToken } from '../../services/authService';
+import { message, Space } from 'antd';
 
 // Creating schema
 const schema = Yup.object().shape({
@@ -19,18 +20,34 @@ const schema = Yup.object().shape({
 
 const LoginPage = () => {
   const { setIsLoggedIn, setUserRole } = useAuth();
+  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Login failed. Please check your email and password and try again',
+    });
+  };
+
   return (
     <>
+      {contextHolder}
       {/* Wrapping form inside formik tag and passing our schema to validationSchema prop */}
       <Formik
         validationSchema={schema}
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
-          try {
             axiosInstance.post('/auth/login', values)
-              .then((response) => {
-                const token = response.data;
+            .then(response => {
+              if (response.status === 403) {
+                error();
+                throw new Error('Access denied');
+              }
+              return response.data;
+            })
+            .then(data => {
+                const token = data;
                 setToken(token)
                 const decodedToken = getDecodedToken(token);                
                 
@@ -40,13 +57,11 @@ const LoginPage = () => {
                 if (decodedToken.authorities[0].authority === "USER")
                   navigate('/user');
                 else navigate('/admin')
-              });
-              // todo: handle 403 status and uncought error 
-          } catch (err) {
-            alert("ERROR");
-            console.log(err);
-            navigate('/login');
-          }
+            })
+            .catch(err => {
+              error()
+              console.log(err);
+            });
         }}
       >
         {({
