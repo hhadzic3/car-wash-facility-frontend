@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
-import { useLocation, Navigate } from "react-router-dom";
+import { useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from 'react-router';
 
 const RequireAuth = ({ element, allowedRoles }) => {
     const { isLoggedIn, userRole } = useAuth();
-    const [isAuthorized, setIsAuthorized] = useState(allowedRoles?.includes(userRole));
-    
-    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (allowedRoles?.includes(userRole))
-            setIsAuthorized(true) 
-        else setIsAuthorized(false)
-    }, [isAuthorized, isLoggedIn, userRole]); 
+        if (!isLoggedIn)
+            navigate('/login')
+        
+        if (!allowedRoles?.includes(userRole)){
+            navigate('/unauthorized')
+        }
+    }, [isLoggedIn, userRole]); 
         
     return ( 
         <>
-        {!isLoggedIn
-            ?   <Navigate to="/login" state={{ from: location }} replace />
-            :   isAuthorized
-                ? element
-                : <Navigate to="/unauthorized" state={{ from: location }} replace /> 
-        }
+            { element }
         </>
     );
 }

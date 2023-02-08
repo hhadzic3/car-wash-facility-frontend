@@ -1,4 +1,4 @@
-import { React } from 'react'
+import { React, useEffect } from 'react'
 import { Formik } from "formik";
 import '../../common/styles/Form.scss';
 import * as Yup from "yup";
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import { getDecodedToken, setToken } from '../../services/authService';
 import { message } from 'antd';
+import { UserRoles } from '../../common/enums/enums'
 
 // Creating schema
 const schema = Yup.object().shape({
@@ -19,7 +20,7 @@ const schema = Yup.object().shape({
 });
 
 const LoginPage = () => {
-  const { setIsLoggedIn, setUserRole } = useAuth();
+  const { isLoggedIn, userRole, setIsLoggedIn, setUserRole } = useAuth();
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   
@@ -29,6 +30,15 @@ const LoginPage = () => {
       content: 'Login failed. Please check your email and password and try again',
     });
   };
+
+  useEffect(() => {
+    if (isLoggedIn){
+      if (userRole == UserRoles.User)
+        navigate('/user')
+      else if (userRole == UserRoles.Admin)
+        navigate('/admin')
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -50,13 +60,14 @@ const LoginPage = () => {
                 const token = data;
                 setToken(token)
                 const decodedToken = getDecodedToken(token);                
-                
+                const authority = decodedToken.authorities[0].authority;
                 setIsLoggedIn(true)
-                setUserRole(decodedToken.authorities[0].authority)
+                setUserRole(authority)
                 
-                if (decodedToken.authorities[0].authority === "USER")
+                if (authority == UserRoles.User)
                   navigate('/user');
-                else navigate('/admin')
+                else if (authority == UserRoles.Admin) 
+                  navigate('/admin')
             })
             .catch(err => {
               error()
