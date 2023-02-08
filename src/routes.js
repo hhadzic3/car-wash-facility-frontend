@@ -1,4 +1,4 @@
-import { NotFoundPage, UserPage, AdminPage, LoginPage, RegisterPage, UnauthorizedPage } from './pages/index';
+import { NotFoundPage, UserPage, AdminPage, LoginPage, RegisterPage, UnauthorizedPage, SuccessPage } from './pages/index';
 import { UserRoles } from './common/enums/enums' 
 
 const routes = [
@@ -17,6 +17,12 @@ const routes = [
 	{
 		path: '/user',
 		element: <UserPage />,
+		authorized: true,
+		allowedRoles: [UserRoles.User],
+	},
+	{
+		path: '/success',
+		element: <SuccessPage />,
 		authorized: true,
 		allowedRoles: [UserRoles.User],
 	},

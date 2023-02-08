@@ -74,26 +74,24 @@ const ListOfPackages = () => {
 
   return (
     <div>
-      <p className='margin'> Select package </p>
-      <Radio.Group
-        onChange={({ target: { value } }) => {
-          setSelectionType(value);
-        }}
-        value={selectionType}
-      >
-      </Radio.Group>
-
       <Divider />
-
-      <Table
-        style={{margin: '10px'}}
-        rowSelection={{
-          type: selectionType,
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={data}
-      />
+        <h3 style={{textAlign: 'center'}}> Select package (program) </h3>
+        <Radio.Group
+          onChange={({ target: { value } }) => {
+            setSelectionType(value);
+          }}
+          value={selectionType}
+        >
+        </Radio.Group>
+        <Table
+          rowSelection={{
+            type: selectionType,
+            ...rowSelection,
+          }}
+          columns={columns}
+          dataSource={data}
+        />
+      <Divider />
     </div>
   )
 }

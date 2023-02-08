@@ -8,9 +8,9 @@ export const ReservationProvider = ({ children }) => {
     const [selectedLocation, setSelectedLocation] = useState();
     const [selectedPackage, setSelectedPackage] = useState();
     const [userId, setUserId] = useState();
-    const [discount, setDiscount] = useState(0);
-    const [numberOfWashings, setNumberOfWashings] = useState(0);
-    const [finalCost, setFinalCost] = useState(0);
+    const [discount, setDiscount] = useState();
+    const [numberOfWashings, setNumberOfWashings] = useState();
+    const [finalCost, setFinalCost] = useState();
 
     useEffect( () => { 
 
@@ -20,8 +20,8 @@ export const ReservationProvider = ({ children }) => {
                 setNumberOfWashings(response.data.numberOdWashes);
                 setUserId(response.data.id);
                 if ((response.data.numberOdWashes + 1) >= 10) {
-                    setDiscount(10);
-                }
+                    setDiscount(true);
+                } else setDiscount(false);
 
             } catch (error) {
               console.log(error)

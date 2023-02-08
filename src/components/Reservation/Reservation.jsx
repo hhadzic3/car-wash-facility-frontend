@@ -3,13 +3,13 @@ import { Button, Modal } from 'antd'
 import useReservation from '../../hooks/useReservation'
 import axiosInstance from '../../config/axois';
 import { message } from 'antd';
-
-// TODO: discount !!!!!!!!!
+import { useNavigate } from 'react-router';
 
 const Reservation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const { selectedLocation, selectedPackage, discount, setDiscount, finalCost, setFinalCost, userId, numberOfWashings } = useReservation();
+  const { selectedLocation, selectedPackage, discount, finalCost, setFinalCost, userId, numberOfWashings } = useReservation();
+  const navigate = useNavigate();
 
   const warning = () => {
     messageApi.open({
@@ -19,8 +19,11 @@ const Reservation = () => {
   };
 
   useEffect(() => {
-    if (selectedPackage)
-       setFinalCost(selectedPackage.cost)
+    if (selectedPackage){
+      if (discount)
+        setFinalCost(selectedPackage.cost * 0.1) // TODO
+      else setFinalCost(selectedPackage.cost)
+    }
   }, [finalCost]);
   
   const showModal = () => {
@@ -36,11 +39,9 @@ const Reservation = () => {
       pack: selectedPackage.key
     });
     console.log(response);
+    navigate('/success', {state: response.data});
   };
   const handleCancel = () => {
-    console.log(userId);
-    console.log(selectedLocation.id);
-    console.log(selectedPackage.key);
     setIsModalOpen(false);
   };
   
@@ -55,8 +56,8 @@ const Reservation = () => {
                         <>
                           <p>Location: {selectedLocation.name}</p>
                           <p>Package: {selectedPackage.package}</p>
-                          <p>Discount: {discount} %</p>
-                          <p>Note: Every 10th washing you get 10% discount. This is your  </p>
+                          <p>Discount: {discount ? 10 : 0} %</p>
+                          <p>Note: Every 10th washing you get 10% discount. This is yours {numberOfWashings + 1}th wash! </p>
                           <p>Pay:  {finalCost} $</p>
                         </>
                         : <p> No data </p>
