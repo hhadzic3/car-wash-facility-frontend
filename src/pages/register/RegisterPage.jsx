@@ -4,7 +4,8 @@ import '../../common/styles/Form.scss';
 import * as Yup from "yup";
 import axiosInstance from '../../config/axois';
 import { useNavigate } from 'react-router';
-
+import { UserRoles } from '../../common/enums/enums'
+import { message } from 'antd';
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -17,9 +18,18 @@ const schema = Yup.object().shape({
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+ 
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Error while creating account! Maybe your email is already taken!',
+    });
+  };
 
   return (
     <>
+    { contextHolder }
     {/* Wrapping form inside formik tag and passing our schema to validationSchema prop */}
     <Formik
       validationSchema={schema}
@@ -30,11 +40,13 @@ const RegisterPage = () => {
             {
               email: values.email,
               password: values.password,
-              role: "USER"
+              role: UserRoles.User
             });
-            navigate("/login");
-        } catch (error) {
-          console.log(error);
+            if (response.data)
+              navigate("/login");
+        } catch (err) {
+          console.log(err);
+          error();
         }
       }}
     >

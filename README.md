@@ -25,3 +25,9 @@ What you need to install the software and how to install them:
 4. Start the development server (npm start)
 
 5. Open a web browser and go to `http://localhost:3000/`. You should see the application running.
+
+## Testing users
+
+1. email: "harun@gmail.com", password: "password" (ROLE: user)
+
+2. email: "admin@gmail.com", password: "password" (ROLE: admin)
